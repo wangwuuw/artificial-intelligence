@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: artificial-intelligence
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/artificial_intelligence?useUnicode=true&characterEncoding=utf8
+    username: root
+    password: root
+    driver-class-name: com.mysql.jdbc.Driver
+server:
+  port: 80
+
+  redis:
+    pool:
+      max-idle: 8
+      min-idle: 0
+      max-active: 8
+    host: 127.0.0.1
+    port: 6379
+#    password:
+    database: 0
+#  logging:
+#    path: c\LogTest\
+#    file: myapp.log
+#    config: logback.xml
+ai:
+  api-key: ef42b0d0404d9776d0b644aa4cd059d2.I6KLpKfm6nUKy6eM
