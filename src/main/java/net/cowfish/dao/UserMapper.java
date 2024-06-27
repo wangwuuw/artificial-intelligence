@@ -6,7 +6,9 @@ package net.cowfish.dao;
 import net.cowfish.entity.UserDto;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * @Company 北斗大学堂 qq群：903672759 
@@ -33,5 +35,7 @@ public interface UserMapper {
 	 */
 	@Select("select count(1) from user where name=#{name}")
 	int checkName(UserDto userPt);
+	@Select("select name,role from user where name=#{name}")
+	UserDto queryByName(@Param("name") String name);
 
 }

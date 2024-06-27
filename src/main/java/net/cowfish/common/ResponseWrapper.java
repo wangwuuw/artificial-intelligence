@@ -25,6 +25,9 @@ public class ResponseWrapper<T> {
 	public static  <T> ResponseWrapper<T> ok(String msg,T data){
 		return createResponse(200,"success",msg,data);
 	}
+	public static  <T> ResponseWrapper<T> ok(){
+		return createResponse(200,"success","",null);
+	}
 	public static  <T> ResponseWrapper<T> ok(String msg){
 		return createResponse(200,"success",msg,null);
 	}

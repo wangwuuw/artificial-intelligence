@@ -65,4 +65,8 @@ public class UserService {
 
     }
 
+    public  UserDto queryByName(String name){
+        return userMapper.queryByName(name);
+    }
+
 }

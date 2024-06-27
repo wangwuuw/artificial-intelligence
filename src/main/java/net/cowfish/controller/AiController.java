@@ -7,12 +7,12 @@ import com.zhipu.oapi.Constants;
 import com.zhipu.oapi.core.httpclient.ApacheHttpClientTransport;
 import com.zhipu.oapi.service.v4.model.*;
 import net.cowfish.common.ResponseWrapper;
+import net.cowfish.dao.ParamMapper;
 import net.cowfish.entity.AiRequest;
+import net.cowfish.entity.ParamModel;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,9 +24,10 @@ import java.util.List;
 public class AiController {
     @Value("${ai.api-key}")
     private String API_KEY;
-    public ResponseWrapper submit(){
-    return null;
-    }
+    @Value("${ai.knowledge-id}")
+    private String KNOWLEDGE_ID;
+
+
     /**
      * 同步调用
      */
@@ -41,7 +42,7 @@ public class AiController {
         ChatTool chatTool = new ChatTool();
         chatTool.setType("retrieval");
         Retrieval retrieval = new Retrieval();
-        retrieval.setKnowledge_id("1802601033340518400");
+        retrieval.setKnowledge_id(KNOWLEDGE_ID);
         chatTool.setRetrieval(retrieval);
         tools.add(chatTool);
         ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest.builder()

@@ -19,7 +19,6 @@ import java.util.Map;
 public class HelloWorldController {
     @RequestMapping("/index")
     public String index() {
-        int i = 1/0;
         return "success";
     }
 

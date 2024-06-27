@@ -2,26 +2,32 @@
 package net.cowfish.controller;
 
 
+import net.cowfish.dao.ParamMapper;
+import net.cowfish.entity.ParamModel;
+import net.cowfish.entity.UserDto;
 import net.cowfish.service.RedisService;
 import net.cowfish.common.ResponseWrapper;
 import net.cowfish.entity.LoginRequest;
 import net.cowfish.entity.RegisterRequest;
 import net.cowfish.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.UUID;
 
 @RestController
 public class UserController {
+	@Value("${user.expire-time}")
+	private Long expireTime;
 	@Autowired
 	private UserService userService;
 	@Autowired
 	private RedisService redisService;
+	@Autowired
+	private ParamMapper paramMapper;
 	/**
 	 * @Description: 要求：
 	 *               用户名：
@@ -64,7 +70,8 @@ public class UserController {
 			return ResponseWrapper.fail("注册失败");
 		}
 		String token = getToken();
-		redisService.setObject(token, name, 60*60*24*30L);
+		redisService.setObject(token, name, expireTime);
+		redisService.setObject(name, token, expireTime);
 		return ResponseWrapper.ok("注册成功",token);
 
 	}
@@ -91,10 +98,24 @@ public class UserController {
 		if (!checkNameAndPwd) {
 			return ResponseWrapper.fail("用户名或密码错误");
 		}
-		String token = getToken();
-		redisService.setObject(token, name, 60*60*24*30L);
-		return ResponseWrapper.ok("登录成功",token);
+		String newToken = getToken();
+		String oldToken = redisService.getString(name);
+		if (!StringUtils.isEmpty(oldToken)) {
+			redisService.delKey(oldToken);
+		}
+		redisService.setObject(newToken, name, expireTime);
+		redisService.setObject(name, newToken, expireTime);
+		return ResponseWrapper.ok("登录成功",newToken);
 
+	}
+	@GetMapping("user/queryParameter")
+	public ResponseWrapper queryParameter(@RequestHeader("Authorization")String token){
+		String name = redisService.getString(token);
+		UserDto userDto = userService.queryByName(name);
+		ParamModel paramModel = paramMapper.queryParam();
+		paramModel.setName(name);
+		paramModel.setRole(userDto.getRole());
+		return ResponseWrapper.ok(paramModel);
 	}
 	public String getToken(){
 		return UUID.randomUUID().toString().replace("-", "");

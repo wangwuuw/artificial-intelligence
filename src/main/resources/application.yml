@@ -8,7 +8,11 @@ spring:
     driver-class-name: com.mysql.jdbc.Driver
 server:
   port: 80
-
+  ssl:
+    enabled: false
+    key-store: classpath:www.wangandrui.xyz.jks
+    key-store-password: yk4v5jlz
+    key-store-type: JKS
   redis:
     pool:
       max-idle: 8
@@ -23,4 +27,7 @@ server:
 #    file: myapp.log
 #    config: logback.xml
 ai:
+  knowledge-id: 1802601033340518400
   api-key: ef42b0d0404d9776d0b644aa4cd059d2.I6KLpKfm6nUKy6eM
+user:
+  expire-time: 2592000

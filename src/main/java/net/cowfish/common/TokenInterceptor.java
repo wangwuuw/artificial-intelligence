@@ -39,8 +39,8 @@ public class TokenInterceptor implements HandlerInterceptor {
         }
         // 这里实现你的token验证逻辑
         // 比如查询数据库，对比token是否有效等
-        String string = redisService.getString(token);
-        if (StringUtils.isEmpty(string)) {
+        String username = redisService.getString(token);
+        if (username == null) {
             return false;
         }
         return true;

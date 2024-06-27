@@ -13,6 +13,7 @@ public class ArticleModel {
     private String articleTitle;
     private String articleType;
     private String articleContent;
+    private Boolean recommend;
     private Integer deleted;
     private Date createTime;
     private Date updateTime;
