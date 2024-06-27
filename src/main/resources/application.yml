@@ -7,12 +7,7 @@ spring:
     password: root
     driver-class-name: com.mysql.jdbc.Driver
 server:
-  port: 80
-  ssl:
-    enabled: false
-    key-store: classpath:www.wangandrui.xyz.jks
-    key-store-password: yk4v5jlz
-    key-store-type: JKS
+  port: 443
   redis:
     pool:
       max-idle: 8
