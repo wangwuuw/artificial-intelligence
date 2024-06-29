@@ -3,12 +3,9 @@ package net.cowfish.controller;
 
 
 import net.cowfish.dao.ParamMapper;
-import net.cowfish.entity.ParamModel;
-import net.cowfish.entity.UserDto;
+import net.cowfish.entity.*;
 import net.cowfish.service.RedisService;
 import net.cowfish.common.ResponseWrapper;
-import net.cowfish.entity.LoginRequest;
-import net.cowfish.entity.RegisterRequest;
 import net.cowfish.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -107,6 +104,16 @@ public class UserController {
 		redisService.setObject(name, newToken, expireTime);
 		return ResponseWrapper.ok("登录成功",newToken);
 
+	}
+	@PostMapping("user/updatePassword")
+	public ResponseWrapper updatePassword(@RequestBody PasswordModel passwordModel,@RequestHeader("Authorization")String token){
+		String name = redisService.getString(token);
+		passwordModel.setName(name);
+		boolean b = userService.updatePassword(passwordModel);
+		if (b) {
+			return ResponseWrapper.ok("修改密码成功");
+		}
+		return ResponseWrapper.fail("旧密码不对,修改密码失败");
 	}
 	@GetMapping("user/queryParameter")
 	public ResponseWrapper queryParameter(@RequestHeader("Authorization")String token){

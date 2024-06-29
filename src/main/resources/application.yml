@@ -7,7 +7,7 @@ spring:
     password: root
     driver-class-name: com.mysql.jdbc.Driver
 server:
-  port: 443
+  port: 80
   redis:
     pool:
       max-idle: 8

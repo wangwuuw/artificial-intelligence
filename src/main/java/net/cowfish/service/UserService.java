@@ -2,6 +2,7 @@ package net.cowfish.service;
 
 import net.cowfish.dao.UserMapper;
 import net.cowfish.entity.LoginRequest;
+import net.cowfish.entity.PasswordModel;
 import net.cowfish.entity.RegisterRequest;
 import net.cowfish.entity.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,6 +68,12 @@ public class UserService {
 
     public  UserDto queryByName(String name){
         return userMapper.queryByName(name);
+    }
+
+    public boolean updatePassword(PasswordModel passwordModel){
+        passwordModel.setUpdateDt(new Date());
+        int flag = userMapper.updatePassword(passwordModel);
+        return flag>0;
     }
 
 }

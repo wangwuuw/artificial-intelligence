@@ -3,11 +3,9 @@
  */
 package net.cowfish.dao;
 
+import net.cowfish.entity.PasswordModel;
 import net.cowfish.entity.UserDto;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /**
@@ -37,5 +35,6 @@ public interface UserMapper {
 	int checkName(UserDto userPt);
 	@Select("select name,role from user where name=#{name}")
 	UserDto queryByName(@Param("name") String name);
-
+    @Update("update user set password = #{newPassword},updateDt = #{updateDt} where  name = #{name} and password = #{oldPassword}")
+    int updatePassword(PasswordModel passwordModel);
 }
